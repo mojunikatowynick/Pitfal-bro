@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://cj6af7j7xfoju"]
+
+[ext_resource type="Texture2D" uid="uid://dr1qp0wnp4qh0" path="res://Graphics/testtile.png" id="1_660sg"]
+[ext_resource type="Script" path="res://Scenes/main_game.gd" id="1_kwlfb"]
+[ext_resource type="PackedScene" uid="uid://drwb50yppa8ux" path="res://Scenes/bro.tscn" id="2_rqvix"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1rtbq"]
+texture = ExtResource("1_660sg")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSet" id="TileSet_jyc5j"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 2
+physics_layer_0/collision_mask = 3
+sources/1 = SubResource("TileSetAtlasSource_1rtbq")
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_kwlfb")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_jyc5j")
+format = 2
+layer_0/tile_data = PackedInt32Array(655360, 1, 0, 655361, 1, 0, 655362, 1, 0, 655363, 1, 0, 655364, 1, 0, 655365, 1, 0, 655366, 1, 0, 655367, 1, 0, 655368, 1, 0, 655369, 1, 0, 655370, 1, 0, 655371, 1, 0, 655372, 1, 0, 655373, 1, 0, 655374, 1, 0, 655375, 1, 0, 655376, 1, 0, 655377, 1, 0, 655378, 1, 0, 655379, 1, 0)
+
+[node name="Bro" parent="." instance=ExtResource("2_rqvix")]
+position = Vector2(626, 242)
