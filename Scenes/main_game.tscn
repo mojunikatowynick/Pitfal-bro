@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://cj6af7j7xfoju"]
+
+[ext_resource type="Texture2D" uid="uid://dr1qp0wnp4qh0" path="res://Graphics/testtile.png" id="1_660sg"]
+[ext_resource type="Script" path="res://Scenes/main_game.gd" id="1_kwlfb"]
+[ext_resource type="PackedScene" uid="uid://cxq40x0r0ntw7" path="res://Scenes/Player.tscn" id="3_docxw"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1rtbq"]
+texture = ExtResource("1_660sg")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSet" id="TileSet_jyc5j"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 2
+physics_layer_0/collision_mask = 3
+sources/1 = SubResource("TileSetAtlasSource_1rtbq")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n50j"]
+size = Vector2(56, 80)
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_kwlfb")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_jyc5j")
+format = 2
+layer_0/tile_data = PackedInt32Array(655360, 1, 0, 655361, 1, 0, 655362, 1, 0, 655363, 1, 0, 655364, 1, 0, 655365, 1, 0, 655366, 1, 0, 655367, 1, 0, 655368, 1, 0, 655369, 1, 0, 655370, 1, 0, 655371, 1, 0, 655372, 1, 0, 655373, 1, 0, 655374, 1, 0, 655375, 1, 0, 655376, 1, 0, 655377, 1, 0, 655378, 1, 0, 655379, 1, 0, 524301, 1, 0, 524302, 1, 0, 524303, 1, 0, 327696, 1, 0, 327697, 1, 0, 327698, 1, 0, 327699, 1, 0, 327700, 1, 0, 327701, 1, 0, 327702, 1, 0)
+
+[node name="Bro" parent="." instance=ExtResource("3_docxw")]
+position = Vector2(512, 227)
+
+[node name="CatchArea" type="Node2D" parent="."]
+
+[node name="ledge" type="Area2D" parent="CatchArea"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CatchArea/ledge"]
+position = Vector2(1034, 351)
+shape = SubResource("RectangleShape2D_7n50j")
+
+[connection signal="body_entered" from="CatchArea/ledge" to="." method="_on_ledge_body_entered"]
+[connection signal="body_exited" from="CatchArea/ledge" to="." method="_on_ledge_body_exited"]
