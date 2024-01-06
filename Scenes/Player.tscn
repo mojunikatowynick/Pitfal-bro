@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxq40x0r0ntw7"]
+[gd_scene load_steps=11 format=3 uid="uid://cxq40x0r0ntw7"]
 
 [ext_resource type="Texture2D" uid="uid://fymgvpc3m20u" path="res://Graphics/testbro.png" id="1_c1t6f"]
 [ext_resource type="Script" path="res://Scenes/Player.gd" id="1_d6pjj"]
@@ -6,9 +6,14 @@
 [ext_resource type="Script" path="res://Scenes/States/Walk.gd" id="4_4d4vp"]
 [ext_resource type="Script" path="res://Scenes/States/Air.gd" id="5_egt01"]
 [ext_resource type="Script" path="res://Scenes/States/Hang.gd" id="6_pn4ne"]
+[ext_resource type="Script" path="res://Scenes/States/LedgeHang.gd" id="7_ed2r7"]
+[ext_resource type="Script" path="res://Scenes/States/LineHang.gd" id="8_1qj4w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3teiu"]
 size = Vector2(62, 62)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0xsai"]
+radius = 37.3363
 
 [node name="Bro" type="CharacterBody2D"]
 collision_mask = 2
@@ -35,7 +40,26 @@ script = ExtResource("5_egt01")
 player = NodePath("../..")
 animator = NodePath("../../Sprite2D")
 
-[node name="Hang" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+[node name="VinesHang" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
 script = ExtResource("6_pn4ne")
 player = NodePath("../..")
 animator = NodePath("../../Sprite2D")
+
+[node name="LedgeHang" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+script = ExtResource("7_ed2r7")
+player = NodePath("../..")
+animator = NodePath("../../Sprite2D")
+
+[node name="LineHang" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+script = ExtResource("8_1qj4w")
+player = NodePath("../..")
+animator = NodePath("../../Sprite2D")
+
+[node name="Detector" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector"]
+shape = SubResource("CircleShape2D_0xsai")
+
+[connection signal="body_entered" from="Detector" to="." method="_on_detector_body_entered"]
