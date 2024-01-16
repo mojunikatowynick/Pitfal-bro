@@ -7,21 +7,24 @@ class_name  LineHang
 var direction
 
 func Enter():
-	animator.frame = 3
+	animator.frame = 0
 	player.position = Global.current_rope_posittion
 	
 func Physics_update(_delta: float):
 	
-	player.velocity = Vector2.ZERO
-
 	if Input.is_action_just_released("Up") and player.line_hang:
 		pass
 
-	if Input.is_action_just_pressed("Down"):
+	elif Input.is_action_just_pressed("Down"):
 		pass
 
-	if Input.is_action_just_pressed("Jump") and player.line_hang:
+	elif Input.is_action_just_pressed("Jump"):
 		player.velocity.y = player.jump_speed
 		Transitioned.emit(self, "Air")
 		
-
+	elif Input.is_action_just_pressed("Catch"):
+		Transitioned.emit(self, "Air")
+		
+	else:
+		player.velocity = Vector2.ZERO
+		player.position = Global.current_rope_posittion

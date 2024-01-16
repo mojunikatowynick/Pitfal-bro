@@ -8,6 +8,7 @@
 size = Vector2(64, 64)
 
 [node name="Rope" type="StaticBody2D"]
+collision_layer = 2
 script = ExtResource("1_8cnbj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

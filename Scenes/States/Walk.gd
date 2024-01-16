@@ -8,7 +8,7 @@ var direction
 
 
 func Enter():
-	animator.frame = 1
+	animator.frame = 0
 	
 func Physics_update(delta: float):
 	

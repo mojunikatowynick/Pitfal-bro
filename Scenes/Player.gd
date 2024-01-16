@@ -12,28 +12,34 @@ var line_hang: bool = false
 var attached_rope_id
 var attached_rope
 
+var current_area
+
+@onready var state = $StateMachine.current_state
 
 func _physics_process(_delta):
+
 	move_and_slide()
 	if velocity.x > 0:
 		$Sprite2D.scale.x = 1
 	elif velocity.x < 0:
 		$Sprite2D.scale.x = -1
-
+	state = $StateMachine.current_state
 
 func will_hang():
 	can_hang = true
 func wont_hang():
 	can_hang = false
-func on_ledge():
-	ledge = true
-func off_ledge():
-	ledge = false
+
 func on_line():
 	line_hang = true
 func off_line():
 	line_hang = false
-
+	
+func area_check(area):
+	current_area = area
+	
+func area_clear():
+	current_area = null
 
 
 #func _on_line_detection_body_entered(body:RopePiece):
@@ -45,7 +51,4 @@ func off_line():
 
 
 
-
-func _on_detector_body_entered(body):
-	attached_rope_id = body.get_instance_id()
 

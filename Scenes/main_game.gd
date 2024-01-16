@@ -1,13 +1,16 @@
 extends Node2D
+var area = "vines"
 
-func _on_ledge_body_entered(body):
-	if "will_hang" in body:
-		body.will_hang()
-	else:
-		pass
+func _on_vines_body_entered(body):
 	
-func _on_ledge_body_exited(body):
-	if "wont_hang" in body:
-		body.wont_hang()
-	else:
+	if "area_check" in body:
+		body.area_check(area)
+	else :
+		pass
+
+func _on_vines_body_exited(body):
+	
+	if "area_clear" in body:
+		body.area_clear()
+	else :
 		pass

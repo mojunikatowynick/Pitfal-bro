@@ -64,5 +64,5 @@ position = Vector2(1040, 544)
 [node name="Rope" parent="." instance=ExtResource("6_xfi8u")]
 position = Vector2(672, 96)
 
-[connection signal="body_entered" from="CatchArea/Vines" to="." method="_on_ledge_body_entered"]
-[connection signal="body_exited" from="CatchArea/Vines" to="." method="_on_ledge_body_exited"]
+[connection signal="body_entered" from="CatchArea/Vines" to="." method="_on_vines_body_entered"]
+[connection signal="body_exited" from="CatchArea/Vines" to="." method="_on_vines_body_exited"]
