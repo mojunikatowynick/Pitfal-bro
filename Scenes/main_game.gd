@@ -14,3 +14,8 @@ func _on_vines_body_exited(body):
 		body.area_clear()
 	else :
 		pass
+
+
+func _on_death_body_entered(body):
+	if "death" in body:
+		body.death()

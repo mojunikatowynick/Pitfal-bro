@@ -12,7 +12,7 @@ func Enter():
 	
 func Physics_update(_delta: float):
 	
-	if Input.is_action_just_released("Up") and player.line_hang:
+	if Input.is_action_just_released("Up"):
 		pass
 
 	elif Input.is_action_just_pressed("Down"):

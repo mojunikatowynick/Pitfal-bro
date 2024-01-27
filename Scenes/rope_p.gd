@@ -5,10 +5,14 @@ var body_in: bool = false
 @export var swing_force: int = 100
 var area = "line"
 var current_rope_piece
-@onready var this_rope = get_name()
+var this_rope 
+var this_pos
+
 
 func _physics_process(_delta):
-
+	#print(body_in)
+	this_pos = self.global_position
+	#print(this_pos)
 	if body_in:
 		rope_position()
 		if Input.is_action_pressed("Right"):
@@ -22,17 +26,21 @@ func _physics_process(_delta):
 			#print(current_rope_piece)
 
 func _on_player_detector_body_entered(body):
-	#current_rope_piece = get_parent().rope_pieces.find("RopeP", 0)
-	#print(current_rope_piece)
+
+	this_rope = get_name()
+	#print(this_rope)
+	current_rope_piece = get_parent().rope_pieces.find(this_rope, 0)
+
 	
 	if body.state is Air:
 		
 		rope_position()
 		if "area_check" in body:
 			body.area_check(area)
+			body_in = true
 		else :
 			pass
-		body_in = true
+		#body_in = true
 	elif body.state !=null:
 		pass
 	else:
@@ -47,4 +55,4 @@ func _on_player_detector_body_exited(body):
 	body_in = false
 
 func rope_position():
-	Global.current_rope_posittion = self.global_position
+	Global.current_rope_posittion = this_pos

@@ -5,13 +5,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @export var move_speed: int = 200
 @export var jump_speed: int = -550
 @export var climb_speed: int = 100
-
-var can_hang: bool = false
-var ledge: bool = false
-var line_hang: bool = false
-var attached_rope_id
-var attached_rope
-
+@onready var start_area = self.global_position
 var current_area
 
 @onready var state = $StateMachine.current_state
@@ -25,15 +19,6 @@ func _physics_process(_delta):
 		$Sprite2D.scale.x = -1
 	state = $StateMachine.current_state
 
-func will_hang():
-	can_hang = true
-func wont_hang():
-	can_hang = false
-
-func on_line():
-	line_hang = true
-func off_line():
-	line_hang = false
 	
 func area_check(area):
 	current_area = area
@@ -41,14 +26,8 @@ func area_check(area):
 func area_clear():
 	current_area = null
 
-
-#func _on_line_detection_body_entered(body:RopePiece):
-	#if !line_hang:
-		#line_hang = true
-		#attached_rope_id = body.get_instance_id()
-		#print(attached_rope_id)
-		#attached_rope = body.parent()
-
+func death():
+	self.position = start_area
 
 
 
