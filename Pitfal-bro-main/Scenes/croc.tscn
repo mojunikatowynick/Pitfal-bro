@@ -1,0 +1,125 @@
+[gd_scene load_steps=8 format=3 uid="uid://8mhl3mn11if2"]
+
+[ext_resource type="Texture2D" uid="uid://cir1ba4bw765j" path="res://Graphics/croc.png" id="1_8snty"]
+[ext_resource type="Script" path="res://Scenes/croc.gd" id="1_cp777"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s6rob"]
+size = Vector2(100, 5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_212a0"]
+radius = 36.5308
+
+[sub_resource type="Animation" id="Animation_l5hyv"]
+resource_name = "Kill"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 1.1, 2.5, 3.5, 3.9, 4.5, 4.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 60), Vector2(0, 0), Vector2(0, 5), Vector2(0, 0), Vector2(0, 5), Vector2(0, 0), Vector2(0, 5), Vector2(0, 0), Vector2(0, 64)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("KillArea:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_t10ni"]
+resource_name = "Safe"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 2.1, 3.1, 3.5, 4.1, 4.4, 4.6, 4.8, 4.9, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 64), Vector2(0, 0), Vector2(0, 0), Vector2(0, 5), Vector2(0, 0), Vector2(0, 5), Vector2(0, 0), Vector2(0, 5), Vector2(0, 0), Vector2(0, 5), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("KillArea:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x0onf"]
+_data = {
+"Kill": SubResource("Animation_l5hyv"),
+"Safe": SubResource("Animation_t10ni")
+}
+
+[node name="Croc" type="CharacterBody2D"]
+collision_layer = 8
+script = ExtResource("1_cp777")
+mode = "Safe"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -14.83)
+texture = ExtResource("1_8snty")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 15.5)
+shape = SubResource("RectangleShape2D_s6rob")
+
+[node name="KillArea" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillArea"]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_212a0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_x0onf")
+}
+
+[connection signal="body_entered" from="KillArea" to="." method="_on_kill_area_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

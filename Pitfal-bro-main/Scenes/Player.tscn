@@ -1,0 +1,179 @@
+[gd_scene load_steps=18 format=3 uid="uid://cxq40x0r0ntw7"]
+
+[ext_resource type="Script" path="res://Scenes/Player.gd" id="1_d6pjj"]
+[ext_resource type="Texture2D" uid="uid://pcudiqucdeda" path="res://Graphics/pitfalbro.png" id="2_8x8g7"]
+[ext_resource type="Script" path="res://Scenes/StateMachine.gd" id="3_utm3a"]
+[ext_resource type="Script" path="res://Scenes/States/Walk.gd" id="4_4d4vp"]
+[ext_resource type="Script" path="res://Scenes/States/Air.gd" id="5_egt01"]
+[ext_resource type="Script" path="res://Scenes/States/Hang.gd" id="6_pn4ne"]
+[ext_resource type="Script" path="res://Scenes/States/LedgeHang.gd" id="7_ed2r7"]
+[ext_resource type="Script" path="res://Scenes/States/LineHang.gd" id="8_1qj4w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3teiu"]
+size = Vector2(36, 60)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0xsai"]
+radius = 27.77
+
+[sub_resource type="Animation" id="Animation_mce5x"]
+resource_name = "Climb"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_0lvej"]
+resource_name = "Hang"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_2gjra"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_pwhkl"]
+resource_name = "Jump"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+
+[sub_resource type="Animation" id="Animation_abaf1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_miqsq"]
+resource_name = "Walk"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oqk56"]
+_data = {
+"Climb": SubResource("Animation_mce5x"),
+"Hang": SubResource("Animation_0lvej"),
+"Idle": SubResource("Animation_2gjra"),
+"Jump": SubResource("Animation_pwhkl"),
+"RESET": SubResource("Animation_abaf1"),
+"Walk": SubResource("Animation_miqsq")
+}
+
+[node name="Bro" type="CharacterBody2D"]
+collision_mask = 10
+script = ExtResource("1_d6pjj")
+jump_speed = -500
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8x8g7")
+hframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_3teiu")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_utm3a")
+initial_state = NodePath("Walk")
+
+[node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+script = ExtResource("4_4d4vp")
+player = NodePath("../..")
+animator = NodePath("../../Sprite2D")
+
+[node name="Air" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+script = ExtResource("5_egt01")
+player = NodePath("../..")
+animator = NodePath("../../Sprite2D")
+
+[node name="VinesHang" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+script = ExtResource("6_pn4ne")
+player = NodePath("../..")
+animator = NodePath("../../Sprite2D")
+
+[node name="LedgeHang" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+script = ExtResource("7_ed2r7")
+player = NodePath("../..")
+animator = NodePath("../../Sprite2D")
+
+[node name="LineHang" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animator")]
+script = ExtResource("8_1qj4w")
+player = NodePath("../..")
+animator = NodePath("../../Sprite2D")
+
+[node name="Detector" type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector"]
+shape = SubResource("CircleShape2D_0xsai")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_oqk56")
+}
